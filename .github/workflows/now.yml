@@ -34,7 +34,7 @@ jobs:
       run: npm install
 
     - name: Install hexo
-      run: npm install hexo
+      run: npm install -g hexo
 
     - name: Generate pages
       run: hexo generate
