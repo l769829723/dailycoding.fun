@@ -16,10 +16,32 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node-version: [12.16.1]
+
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
+
+    - name: Run building with Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Run installing dependencies
+      run: npm install
+
+    - name: Install hexo
+      run: npm install hexo
+
+    - name: Generate pages
+      run: hexo generate
+
+    - uses: actions/checkout@v2
+      with:
+        ref: gh-pages
 
     - name: ZEIT Now Deployment
       uses: amondnet/now-deployment@v2.0.1
